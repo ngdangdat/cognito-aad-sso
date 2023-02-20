@@ -4,7 +4,7 @@
 
 ## Diagram flow
 
-![Diagram](./docs/aad_cognito.png)
+![Diagram v2](./docs/aad_cognito_v2.png)
 
 ## Setup
 - Install Azure CLI (`az`) - Link TBA
