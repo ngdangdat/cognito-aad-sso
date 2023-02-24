@@ -1,0 +1,48 @@
+{
+    "ClaimsMappingPolicy": {
+        "IncludeBasicClaimSet": "true",
+        "Version": 1,
+        "ClaimsSchema": [
+            {
+                "SamlClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
+                "Source": "user",
+                "ID": "mail"
+            },
+            {
+                "SamlClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+                "Source": "user",
+                "ID": "givenname"
+            },
+            {
+                "SamlClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+                "Source": "user",
+                "ID": "surname"
+            },
+            {
+                "SamlClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
+                "Source": "user",
+                "ID": "userprincipalname"
+            },
+            {
+                "SamlClaimType": "http://schemas.microsoft.com/ws/2008/06/identity/claims/groups",
+                "Source": "user",
+                "ID": "groups"
+            },
+            {
+                "SamlClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/employeeid",
+                "Source": "user",
+                "ID": "employeeid"
+            },
+            {
+                "SamlClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/jobtitle",
+                "Source": "user",
+                "ID": "jobtitle"
+            },
+            {
+                "SamlClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/companyname",
+                "Source": "user",
+                "ID": "companyname"
+            }
+        ]
+    }
+}
