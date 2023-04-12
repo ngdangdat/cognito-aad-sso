@@ -12,14 +12,13 @@ dotenv.config();
 export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     // environment variables
-    const awsRegion: string = process.env.AWS_REGION || "ap-northeast-1";
-    const awsStackIdentifier: string = process.env.AWS_STACK_ID || `DEFAULT_COGNITO_STACK_ID`;
-    const cognitoAuthUrl: string = process.env.COGNITO_AUTH_URL || `https://www.example.com/`;
+    const awsStackIdentifier: string = process.env.AWS_STACK_ID || 'DEFAULT_COGNITO_STACK_ID';
     const cognitoAadIdpDisplayName: string = process.env.COGNITO_IDP_DISPLAY_NAME || 'MyAAD';
-    const aadSamlFederationMetadataXml: string = "./files/saml/azure_ad_demo_saml.xml";
-    const cognitoCallbackUrl: string = process.env.COGNITO_CALLBACK_URL || "";
-    const cognitoLogoutUrl: string = process.env.COGNITO_LOGOUT_URL || "";
-    const cognitoAuthDomainPrefix: string = process.env.COGNITO_AUTH_DOMAIN_PREFIX || "cognito-sso-aad";
+    const cognitoSamlXmlFilename: string = process.env.SAML_SERVICE_FEDERATION_XML_FILENAME || 'azure_ad_demo_saml';
+    const aadSamlFederationMetadataXml: string = `./files/saml/${cognitoSamlXmlFilename}.xml`;
+    const cognitoCallbackUrl: string = process.env.COGNITO_CALLBACK_URL || '';
+    const cognitoLogoutUrl: string = process.env.COGNITO_LOGOUT_URL || '';
+    const cognitoAuthDomainPrefix: string = process.env.COGNITO_AUTH_DOMAIN_PREFIX || 'cognito-sso-aad';
 
     super(scope, id, props);
     const userPoolProperties: UserPoolProps = {
@@ -31,7 +30,6 @@ export class CdkStack extends cdk.Stack {
         },
       },
       signInAliases: { email: true, },
-      autoVerify: { email: true },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       customAttributes: {
         groups: new cognito.StringAttribute({ minLen: 1, maxLen: 1000, mutable: true }),
@@ -56,7 +54,7 @@ export class CdkStack extends cdk.Stack {
         },
         attributeMapping: {
           'email': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
-          'custom:groups': 'http://schemas.microsoft.com/ws/2008/06/identity/claims/groups',
+          'name': 'http://schemas.microsoft.com/identity/claims/displayname',
         },
       });
       const clientProps: UserPoolClientOptions = {
@@ -67,7 +65,7 @@ export class CdkStack extends cdk.Stack {
         ],
         oAuth: {
           flows: {
-            implicitCodeGrant: true,
+            authorizationCodeGrant: true,
           },
           scopes: [
             cognito.OAuthScope.OPENID,

@@ -42,14 +42,14 @@ class DemoAzureADStack extends TerraformStack {
         logoutUrl: samlLogoutUrl,
       },
       preventDuplicateNames: true,
-      groupMembershipClaims: ["SecurityGroup"],
+      groupMembershipClaims: ["All"],
       owners: [],
     });
     const spFeatureTags: ServicePrincipalFeatureTags = {
       enterprise: true,
       customSingleSignOn: true,
     };
-    const servicePrinciple = new ServicePrincipal(this, "AzureADDemoApp", {
+    const servicePrinciple: ServicePrincipal = new ServicePrincipal(this, "AzureADDemoApp", {
       applicationId: app.applicationId,
       featureTags: [spFeatureTags],
       preferredSingleSignOnMode: "saml",
