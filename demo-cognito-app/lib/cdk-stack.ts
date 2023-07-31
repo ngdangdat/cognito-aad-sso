@@ -6,11 +6,12 @@ import * as fs from 'fs';
 import { UserPoolProps, UserPoolClientOptions } from 'aws-cdk-lib/aws-cognito/lib';
 import * as dotenv from "dotenv";
 
-dotenv.config();
-
 
 export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+    const envfile = this.node.tryGetContext("profile") || "vsdev";
+    dotenv.config({ path: `${envfile}.env`, });
     // environment variables
     const awsStackIdentifier: string = process.env.AWS_STACK_ID || 'DEFAULT_COGNITO_STACK_ID';
     const cognitoAadIdpDisplayName: string = process.env.COGNITO_IDP_DISPLAY_NAME || 'MyAAD';
@@ -20,9 +21,8 @@ export class CdkStack extends cdk.Stack {
     const cognitoLogoutUrl: string = process.env.COGNITO_LOGOUT_URL || '';
     const cognitoAuthDomainPrefix: string = process.env.COGNITO_AUTH_DOMAIN_PREFIX || 'cognito-sso-aad';
 
-    super(scope, id, props);
     const userPoolProperties: UserPoolProps = {
-      userPoolName: `${awsStackIdentifier}AadUserPool`,
+      userPoolName: awsStackIdentifier,
       standardAttributes: {
         email: {
           required: true,
@@ -30,6 +30,7 @@ export class CdkStack extends cdk.Stack {
         },
       },
       signInAliases: { email: true, },
+      autoVerify: { email: true },
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       customAttributes: {
         groups: new cognito.StringAttribute({ minLen: 1, maxLen: 1000, mutable: true }),
